@@ -14,6 +14,9 @@ class CodeGitUsernameCredentialSetter constructor(
     override fun getCredentialUrl(url: String): String {
         try {
             val u = URL(url)
+
+            val protocol = u.getProtocol();
+
             val host = if (u.host.endsWith("/")) {
                 u.host.removeSuffix("/")
             } else {
@@ -25,7 +28,7 @@ class CodeGitUsernameCredentialSetter constructor(
             } else {
                 u.path
             }
-            return "http://${URLEncoder.encode(username, "UTF8")}:${URLEncoder.encode(password, "UTF8")}@$host/$path"
+            return "$protocol://${URLEncoder.encode(username, "UTF8")}:${URLEncoder.encode(password, "UTF8")}@$host/$path"
         } catch (t: Throwable) {
             logger.warn("Fail to get the username and password credential url for $url", t)
         }
